@@ -250,10 +250,21 @@ void clock(u8 phase) {
 		pos = next_pos;
 
 		// live param record
-		if(param_accept && live_in) {
-			param_dest = &w.wp[pattern].cv_curves[edit_cv_ch][pos];
-			w.wp[pattern].cv_curves[edit_cv_ch][pos] = adc[1];
-		}
+        if (!GRID256) {
+            if(param_accept && live_in) {
+                param_dest = &w.wp[pattern].cv_curves[edit_cv_ch][pos];
+                w.wp[pattern].cv_curves[edit_cv_ch][pos] = adc[1];
+            }
+        } else {
+            if(param_accept && live_in) {
+                param_dest = &w.wp[pattern].cv_curves[0][pos];
+                w.wp[pattern].cv_curves[0][pos] = adc[1];
+            }
+            if(param_accept2 && live_in) {
+                param_dest2 = &w.wp[pattern].cv_curves[1][pos];
+                w.wp[pattern].cv_curves[1][pos] = adc[1];
+            }
+        }
 
 		// calc next step
 		if(w.wp[pattern].step_mode == mForward) { 		// FORWARD
@@ -604,6 +615,7 @@ static void handler_PollADC(s32 data) {
 	clock_temp = i;
 
 	// PARAM POT INPUT
+    /* not used?
 	if(param_accept && edit_prob) {
 		*param_dest8 = adc[1] >> 4; // scale to 0-255;
 		// print_dbg("\r\nnew prob: ");
@@ -611,7 +623,9 @@ static void handler_PollADC(s32 data) {
 		// print_dbg("\t" );
 		// print_dbg_ulong(adc[1]);
 	}
-	else if(param_accept || param_accept2) {
+	else
+    */
+    if(param_accept || param_accept2) {
         if (param_accept) {
             if(quantize_in)
                 *param_dest = (adc[1] / 34) * 34;
@@ -832,10 +846,15 @@ static void handler_MonomeGridKey(s32 data) {
                 }
                 else if(y == 7) {
                     if(key_alt && z) {
-                        param_dest = &w.wp[pattern].cv_curves[edit_cv_ch][pos];
+                        if (edit_cv_ch) {
+                            param_dest2 = &w.wp[pattern].cv_curves[edit_cv_ch][pos];
+                            param_accept2 = 1;
+                        } else {
+                            param_dest = &w.wp[pattern].cv_curves[edit_cv_ch][pos];
+                            param_accept = 1;
+                        }
                         w.wp[pattern].cv_curves[edit_cv_ch][pos] = (adc[1] / 34) * 34;
                         quantize_in = 1;
-                        param_accept = 1;
                         live_in = 1;
                     }
                     else if(center && z) {
@@ -848,8 +867,13 @@ static void handler_MonomeGridKey(s32 data) {
                         }
                     }
                     else {
-                        param_accept = z;
-                        param_dest = &w.wp[pattern].cv_curves[edit_cv_ch][x];
+                        if (edit_cv_ch) {
+                            param_dest2 = &w.wp[pattern].cv_curves[edit_cv_ch][x];
+                            param_accept2 = z;
+                        } else {
+                            param_dest = &w.wp[pattern].cv_curves[edit_cv_ch][x];
+                            param_accept = z;
+                        }
                         if(z) {
                             w.wp[pattern].cv_curves[edit_cv_ch][x] = (adc[1] / 34) * 34;
                             quantize_in = 1;
