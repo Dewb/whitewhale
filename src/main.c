@@ -337,7 +337,7 @@ void clock(u8 phase) {
         
         // don't change CVs when trigger not active
         if ((w.wp[pattern].steps[pos] & 0x1) == 0) prob0 = 0;
-		if ((w.wp[pattern].steps[pos] & 0x10) == 0) prob1 = 0;
+		if ((w.wp[pattern].steps[pos] & 0x2) == 0) prob1 = 0;
 		
 		// PARAM 0
 		if((rnd() % 255) < prob0 && w.cv_mute[0]) {
