@@ -319,9 +319,15 @@ void clock(u8 phase) {
 		if(edit_mode == mSeries)
 			series_step++;
 
-
+        u8 prob0 = w.wp[pattern].cv_probs[0][pos];
+        u8 prob1 = w.wp[pattern].cv_probs[1][pos];
+        
+        // don't change CVs when trigger not active
+        if ((w.wp[pattern].steps[pos] & 0x1) == 0) prob0 = 0;
+		if ((w.wp[pattern].steps[pos] & 0x10) == 0) prob1 = 0;
+		
 		// PARAM 0
-		if((rnd() % 255) < w.wp[pattern].cv_probs[0][pos] && w.cv_mute[0]) {
+		if((rnd() % 255) < prob0 && w.cv_mute[0]) {
 			if(w.wp[pattern].cv_mode[0] == 0) {
 				cv0 = w.wp[pattern].cv_curves[0][pos];
 			}
@@ -341,7 +347,7 @@ void clock(u8 phase) {
 		}
 
 		// PARAM 1
-		if((rnd() % 255) < w.wp[pattern].cv_probs[1][pos] && w.cv_mute[1]) {
+		if((rnd() % 255) < prob1 && w.cv_mute[1]) {
 			if(w.wp[pattern].cv_mode[1] == 0) {
 				cv1 = w.wp[pattern].cv_curves[1][pos];
 			}
