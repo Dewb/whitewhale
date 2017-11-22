@@ -1,0 +1,32 @@
+SOURCES = \
+	$(wildcard src/*.c) \
+	$(wildcard rack/virtual_avr/*.c) \
+	$(wildcard rack/virtual_avr/stubs/*.c) \
+	libavr32/src/events.c \
+	libavr32/src/timers.c \
+	libavr32/src/monome.c \
+	libavr32/src/util.c \
+	src/main.c \
+	$(wildcard rack/*.cpp)
+
+include ../../plugin.mk
+
+FLAGS += \
+	-DNULL=0 \
+	-gfull -o0 \
+	-D__AVR32_UC3B0256__ \
+	-Werror=implicit-function-declaration \
+	-Irack \
+	-Irack/virtual_avr \
+	-Irack/virtual_avr/stubs \
+	-Ilibavr32/src \
+	-Ilibavr32/asf/avr32/utils \
+	-Ilibavr32/asf/avr32/utils/preprocessor \
+	-Ilibavr32/conf \
+	-Ilibavr32/conf/trilogy
+
+dist: all
+	mkdir -p dist/Monome
+	cp LICENSE* dist/Monome/
+	cp $(TARGET) dist/Monome/
+	cp -R res dist/Monome/

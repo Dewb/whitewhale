@@ -33,7 +33,6 @@
 // this
 #include "conf_board.h"
 #include "ii.h"
-	
 
 #define FIRSTRUN_KEY 0x22
 
@@ -150,11 +149,11 @@ u8 SIZE, LENGTH, VARI;
 typedef void(*re_t)(void);
 re_t re;
 
-
+#ifdef HARDWARE
 // NVRAM data structure located in the flash array.
 __attribute__((__section__(".flash_nvram")))
+#endif
 static nvram_data_t flashy;
-
 
 
 
@@ -171,7 +170,7 @@ extern void timers_set_monome(void);
 extern void timers_unset_monome(void);
 
 // check the event queue
-static void check_events(void);
+void check_events(void);
 
 // handler protos
 static void handler_None(s32 data) { ;; }
@@ -2046,7 +2045,6 @@ int main(void)
 	irq_initialize_vectors();
 	register_interrupts();
 	cpu_irq_enable();
-
 	init_usb_host();
 	init_monome();
 
@@ -2145,7 +2143,10 @@ int main(void)
 	// spi_write(SPI,0xff);
 	// spi_unselectChip(SPI,DAC_SPI);
 
+#ifdef HARDWARE
 	while (true) {
 		check_events();
 	}
+#endif
+
 }
