@@ -2092,6 +2092,20 @@ int main(void)
 			w.wp[i1].tr_mode = 0;
 		}
 
+		// temporary pattern for use without a grid!
+		w.wp[0].steps[0] = 0x1;
+		w.wp[0].steps[2] = 0x2;
+		w.wp[0].steps[4] = 0x4;
+		w.wp[0].steps[6] = 0x8;
+		w.wp[0].steps[8] = 0x1;
+		w.wp[0].steps[10] = 0x3;
+		w.wp[0].steps[12] = 0x7;
+		w.wp[0].steps[14] = 0xF;
+		for(i1=0;i1<16;i1++) {
+			w.wp[0].cv_curves[0][i1] = i1 * 4096;
+			w.wp[0].cv_curves[1][15 - i1] = i1 * 4096;
+		}
+
 		w.series_start = 0;
 		w.series_end = 3;
 
