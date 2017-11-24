@@ -152,8 +152,10 @@ re_t re;
 #ifdef HARDWARE
 // NVRAM data structure located in the flash array.
 __attribute__((__section__(".flash_nvram")))
-#endif
 static nvram_data_t flashy;
+#else
+nvram_data_t flashy;
+#endif
 
 
 
