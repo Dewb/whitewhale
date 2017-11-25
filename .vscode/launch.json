@@ -16,7 +16,7 @@
                 { "name": "DYLD_FALLBACK_LIBRARY_PATH", "value": "dep/lib" },
                 { "name": "LD_LIBRARY_PATH", "value": "dep/lib" }
             ],
-            "externalConsole": true,
+            "externalConsole": false,
             "MIMode": "lldb"
         }
     ]
