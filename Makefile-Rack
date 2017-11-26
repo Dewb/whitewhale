@@ -3,6 +3,10 @@ SOURCES = \
 	$(wildcard rack/virtual_avr/*.c) \
 	$(wildcard rack/virtual_avr/stubs/*.c) \
 	rack/lib/base64/base64.cpp \
+	$(wildcard rack/lib/oscpack/ip/*.cpp) \
+	$(wildcard rack/lib/oscpack/ip/posix/*.cpp) \
+	$(wildcard rack/lib/oscpack/osc/*.cpp) \
+	$(wildcard rack/lib/serialosc/*.cpp) \
 	libavr32/src/events.c \
 	libavr32/src/timers.c \
 	libavr32/src/monome.c \
@@ -21,6 +25,8 @@ FLAGS += \
 	-Irack/virtual_avr \
 	-Irack/virtual_avr/stubs \
 	-Irack/lib/base64 \
+	-Irack/lib/oscpack \
+	-Irack/lib/serialosc \
 	-Ilibavr32/src \
 	-Ilibavr32/asf/avr32/utils \
 	-Ilibavr32/asf/avr32/utils/preprocessor \
