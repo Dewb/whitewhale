@@ -1,7 +1,6 @@
 SOURCES = \
 	$(wildcard src/*.c) \
-	$(wildcard rack/virtual_avr/*.c) \
-	$(wildcard rack/virtual_avr/stubs/*.c) \
+	$(wildcard rack/mock_hardware/*.c) \
 	rack/lib/base64/base64.cpp \
 	$(wildcard rack/lib/oscpack/ip/*.cpp) \
 	$(wildcard rack/lib/oscpack/ip/posix/*.cpp) \
@@ -22,8 +21,8 @@ FLAGS += \
 	-D__AVR32_UC3B0256__ \
 	-Werror=implicit-function-declaration \
 	-Irack \
-	-Irack/virtual_avr \
-	-Irack/virtual_avr/stubs \
+	-Irack/mock_hardware \
+	-Irack/mock_hardware/stubs \
 	-Irack/lib/base64 \
 	-Irack/lib/oscpack \
 	-Irack/lib/serialosc \
