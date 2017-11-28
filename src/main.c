@@ -149,15 +149,13 @@ u8 SIZE, LENGTH, VARI;
 typedef void(*re_t)(void);
 re_t re;
 
-#ifdef HARDWARE
 // NVRAM data structure located in the flash array.
+#ifdef TARGET
 __attribute__((__section__(".flash_nvram")))
 static nvram_data_t flashy;
 #else
 nvram_data_t flashy;
 #endif
-
-
 
 ////////////////////////////////////////////////////////////////////////////////
 // prototypes
@@ -2027,9 +2025,9 @@ void flash_read(void) {
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-// main
+// initialize + main
 
-int main(void)
+void initialize_module()
 {
 	u8 i1,i2;
 
@@ -2144,11 +2142,13 @@ int main(void)
 	// spi_write(SPI,0xff);
 	// spi_write(SPI,0xff);
 	// spi_unselectChip(SPI,DAC_SPI);
+}
 
-#ifdef HARDWARE
+int main(void)
+{
+	initialize_module();
+
 	while (true) {
 		check_events();
 	}
-#endif
-
 }
