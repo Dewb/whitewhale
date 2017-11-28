@@ -3,7 +3,7 @@ white whale - VCVRack plugin branch
 
 ### Building:
 
-1. Clone VCVRack and follow its build instructions.
+1. Clone [VCVRack](https://github.com/VCVRack/Rack) and follow its build instructions.
 2. Clone this repo into the `plugins` folder under VCVRack.
 3. Switch to the vcvrack branch with `git checkout vcvrack`
 4. Clone submodules with `git submodule update --init --recursive`
