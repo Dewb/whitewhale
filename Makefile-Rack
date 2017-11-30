@@ -1,23 +1,6 @@
-SOURCES = \
-	$(wildcard src/*.c) \
-	$(wildcard rack/mock_hardware/*.c) \
-	rack/lib/base64/base64.cpp \
-	$(wildcard rack/lib/oscpack/ip/*.cpp) \
-	$(wildcard rack/lib/oscpack/ip/posix/*.cpp) \
-	$(wildcard rack/lib/oscpack/osc/*.cpp) \
-	$(wildcard rack/lib/serialosc/*.cpp) \
-	libavr32/src/events.c \
-	libavr32/src/timers.c \
-	libavr32/src/monome.c \
-	libavr32/src/util.c \
-	src/main.c \
-	$(wildcard rack/*.cpp)
-
-include ../../plugin.mk
-
-FLAGS += \
+FLAGS = \
 	-DNULL=0 \
-	-gfull -o0 \
+	-o0 \
 	-D__AVR32_UC3B0256__ \
 	-Werror=implicit-function-declaration \
 	-Irack \
@@ -27,10 +10,35 @@ FLAGS += \
 	-Irack/lib/oscpack \
 	-Irack/lib/serialosc \
 	-Ilibavr32/src \
-	-Ilibavr32/asf/avr32/utils \
-	-Ilibavr32/asf/avr32/utils/preprocessor \
 	-Ilibavr32/conf \
-	-Ilibavr32/conf/trilogy
+	-Ilibavr32/conf/trilogy \
+	-Isrc
+	
+SOURCES = \
+	$(wildcard src/*.c) \
+	$(wildcard rack/mock_hardware/*.c) \
+	rack/lib/base64/base64.cpp \
+	$(wildcard rack/lib/oscpack/ip/*.cpp) \
+	$(wildcard rack/lib/oscpack/osc/*.cpp) \
+	$(wildcard rack/lib/serialosc/*.cpp) \
+	libavr32/src/events.c \
+	libavr32/src/timers.c \
+	libavr32/src/monome.c \
+	libavr32/src/util.c \
+	$(wildcard rack/*.cpp)
+
+include ../../arch.mk
+
+ifeq ($(ARCH), win)
+	SOURCES += $(wildcard rack/lib/oscpack/ip/win32/*.cpp) 
+	LDFLAGS += -lws2_32 -lwinmm
+else
+	SOURCES += $(wildcard rack/lib/oscpack/ip/posix/*.cpp) 
+endif
+
+include ../../plugin.mk
+
+FLAGS := $(filter-out -MMD,$(FLAGS))
 
 dist: all
 	mkdir -p dist/Monome
