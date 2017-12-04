@@ -157,6 +157,12 @@ __attribute__((__section__(".flash_nvram")))
 static nvram_data_t flashy;
 #else
 nvram_data_t flashy;
+#ifdef DECLARE_NVRAM
+DECLARE_NVRAM(&flashy, sizeof(nvram_data_t))
+#endif
+#ifdef DECLARE_VRAM
+DECLARE_VRAM(&w, sizeof(whale_set))
+#endif
 #endif
 
 
