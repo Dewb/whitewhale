@@ -105,7 +105,7 @@ typedef struct {
 	u8 cv_mute[2];
 } whale_set;
 
-typedef const struct {
+typedef struct {
 	u8 fresh;
 	edit_modes edit_mode;
 	u8 preset_select;
