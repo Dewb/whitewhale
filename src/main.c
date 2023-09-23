@@ -1453,7 +1453,13 @@ static void refresh() {
 					monomeLedBuffer[96+i1] = (w.wp[pattern].cv_curves[edit_cv_ch][i1] > 2047) * 7;
 					monomeLedBuffer[80+i1] = (w.wp[pattern].cv_curves[edit_cv_ch][i1] > 3071) * 7;
 					monomeLedBuffer[64+i1] = 0;
-					monomeLedBuffer[64+16*(3-(w.wp[pattern].cv_curves[edit_cv_ch][i1]>>10))+i1] = (w.wp[pattern].cv_curves[edit_cv_ch][i1]>>7) & 0x7;
+
+					u16 val = w.wp[pattern].cv_curves[edit_cv_ch][i1];
+					int index = 64 + 16 * (3 - (val >> 10)) + i1;
+					if (index >= 0 && index < MONOME_MAX_LED_BYTES)
+					{
+						monomeLedBuffer[index] = (val >> 7) & 0x7;
+					}
 				}
 
 				// play step highlight
